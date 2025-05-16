@@ -1,0 +1,5 @@
+[project]
+name = "story_generator"
+version = "0.1.0"
+description = "Use the power of AI to create stories"
+requires-python = ">=3.9"
