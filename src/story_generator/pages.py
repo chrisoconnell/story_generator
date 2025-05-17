@@ -1,0 +1,66 @@
+import os
+
+
+def get_path_to_summaries(title: str = None) -> str:
+    path = "summaries"
+    if title:
+        path += f"/{title}"
+    return _get_absolute_path(path)
+
+def get_path_to_stories(title: str = None) -> str:
+    path = "stories"
+    if title:
+        path += f"/{title}"
+    return _get_absolute_path(path)
+
+def get_summary_pages(title: str) -> list:
+    path = get_path_to_summaries(title)
+    return sorted(os.listdir(path))
+
+def get_story_page_from_summary_page(page: str):
+    return page.replace(".txt", ".htm")
+
+def get_list_of_summary_pages(title: str) -> list:
+    return os.listdir(get_path_to_summaries(title))
+
+def get_chapters_from_page(title: str, page) -> list:
+    with open(get_path_to_summaries(f"{title}/{page}"), "r") as f:
+        return _filter_and_trim(f.read().split("\n"))
+
+def write_page_to_file(title: str, page: str, content: str):
+    _create_dir(get_path_to_stories(title))
+    with open(get_path_to_stories(f"{title}/{page}"), "w") as f:
+        f.write(content)
+
+def get_html(title: str, story: str) -> str:
+    return f"""
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>{title}</title>
+        <style>
+            body {{
+                width: 960px; margin: 0 auto; font-size: larger;        
+            }}
+        </style>
+    </head>
+    <body>
+        {story}
+    </body>
+</html>
+    """.strip()
+
+
+def _get_absolute_path(path: str) -> str:
+    paths = path.split('/')
+    fullpath = os.path.join(os.path.dirname(__file__), "..", "..", *paths)
+    return os.path.abspath(str(fullpath))
+
+def _filter_and_trim(chapters: list) -> list:
+    return [chapter.strip(' ') for chapter in chapters if chapter]
+
+def _create_dir(path: str):
+    if not os.path.exists(path):
+        os.makedirs(path)
