@@ -4,14 +4,21 @@ from dotenv import load_dotenv
 from openai.lib import ResponseFormatT
 from openai.types.chat import ChatCompletionMessage
 from story_generator.decorators import retry_on_parse_error, catch_exception
-from typing import List, Union, Type
+from typing import Union, Type
 
 from story_generator.messages import Messages
 
 load_dotenv()
 
-base_model = "grok-3-beta"
-fast_model = "grok-3-fast-beta"
+_models = {
+    "base": "grok-3",
+    "fast": "grok-3-fast",
+    "cheap": "grok-2-1212",
+    "default": "grok-2-1212"
+}
+
+def get_model(model: str = None) -> str:
+    return _models.get(model, _models["default"])
 
 def get_client() -> OpenAI:
     return OpenAI(
@@ -22,13 +29,13 @@ def get_client() -> OpenAI:
 @retry_on_parse_error()
 def ask_grok_format(
         client: OpenAI,
-        messages: List,
+        messages: Messages,
         response_format: Union[Type[ResponseFormatT], NotGiven]
 ) -> tuple:
     completion = client.beta.chat.completions.parse(
-        model=base_model,
+        model=get_model(),
         response_format=response_format,
-        messages=messages,
+        messages=messages.messages,
     )
 
     parsed_values = completion.choices[0].message.parsed
@@ -44,7 +51,7 @@ def ask_grok(client: OpenAI, messages: Messages) -> str:
 
 def _call_ask_grok(client: OpenAI, messages: Messages) -> ChatCompletionMessage:
     completion = client.chat.completions.create(
-        model=base_model,
+        model=get_model(),
         messages=messages.messages,
     )
 
