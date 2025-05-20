@@ -2,15 +2,11 @@ import os
 
 
 def get_path_to_summaries(title: str = None) -> str:
-    path = "summaries"
-    if title:
-        path += f"/{title}"
+    path = f"summaries/{title}" if title else "summaries"
     return _get_absolute_path(path)
 
 def get_path_to_stories(title: str = None) -> str:
-    path = "stories"
-    if title:
-        path += f"/{title}"
+    path = f"stories/{title}" if title else "stories"
     return _get_absolute_path(path)
 
 def get_path_to_local(filename: str) -> str:
@@ -23,8 +19,16 @@ def get_summary_pages(title: str) -> list:
 def get_story_page_from_summary_page(page: str):
     return page.replace(".txt", ".htm")
 
+def get_message_page_from_summary_page(page: str):
+    return page.replace(".txt", "_messages.json")
+
 def get_list_of_summary_pages(title: str) -> list:
     return os.listdir(get_path_to_summaries(title))
+
+def get_pages_before_current_page(title: str, page: str) -> list:
+    pages = get_list_of_summary_pages(title)
+    return pages[:pages.index(page)]
+
 
 def get_chapters_from_page(title: str, page) -> list:
     with open(get_path_to_summaries(f"{title}/{page}"), "r") as f:

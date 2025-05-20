@@ -14,7 +14,8 @@ _models = {
     "base": "grok-3",
     "fast": "grok-3-fast",
     "cheap": "grok-2-1212",
-    "default": "grok-2-1212"
+    "mini": "grok-3-mini",
+    "default": "grok-3-mini"
 }
 
 def get_model(model: str = None) -> str:

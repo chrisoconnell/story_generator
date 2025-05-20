@@ -1,5 +1,5 @@
 from story_generator.pages import get_html, get_path_to_summaries, get_path_to_stories, get_summary_pages, get_story_page_from_summary_page, \
-    get_list_of_summary_pages, get_chapters_from_page
+    get_list_of_summary_pages, get_chapters_from_page, get_message_page_from_summary_page, get_pages_before_current_page
 import pytest
 from bs4 import BeautifulSoup
 import os.path
@@ -42,10 +42,23 @@ def test_get_story_page_from_summary_page():
     result = get_story_page_from_summary_page('page1.txt')
     assert result == 'page1.htm'
 
+def test_get_message_page_from_summary_page():
+    result = get_message_page_from_summary_page('Example/page2.txt')
+    assert result == 'Example/page2_messages.json'
+
 def test_get_list_of_summary_pages():
     result = get_list_of_summary_pages('Example')
     assert isinstance(result, list)
 
+def test_get_pages_before_current_page():
+    result = get_pages_before_current_page('Example', 'page1.txt')
+    assert result == []
+
+    result = get_pages_before_current_page('Example', 'page2.txt')
+    assert result == ['page1.txt']
+
+    result = get_pages_before_current_page('Example', 'page3.txt')
+    assert result == ['page1.txt', 'page2.txt']
 
 @pytest.fixture
 def mock_file_data():

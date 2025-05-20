@@ -1,8 +1,6 @@
 import unittest.mock
-import os
-import importlib
 from story_generator.instructions import get_html_format_instructions, get_expanded_story_instructions, get_current_scene, get_next_scene, \
-    _get_local_overrides_module, _get_local_defaults
+    _get_local_overrides_module, _get_local_defaults, get_continue_story
 
 
 def test_get_html_format_instructions():
@@ -15,11 +13,15 @@ def test_get_expanded_story_instructions():
     assert isinstance(result, str)
 
 def test_get_current_scene():
-    result = get_current_scene()
+    result = get_current_scene('Example Scene')
     assert isinstance(result, str)
 
 def test_get_next_scene():
-    result = get_next_scene()
+    result = get_next_scene('Example Scene')
+    assert isinstance(result, str)
+
+def test_get_continue_story():
+    result = get_continue_story(['chapter 1', 'chapter 2'])
     assert isinstance(result, str)
 
 
@@ -57,7 +59,6 @@ def test_get_local_overrides_module_success(mock_exists, mock_module_from_spec, 
     mock_spec.loader.exec_module.assert_called_once_with(mock_module)
 
 
-@unittest.mock.patch('os.path.exists')
 def test_get_local_overrides_module_no_file(mock_exists):
     mock_exists.return_value = False
 

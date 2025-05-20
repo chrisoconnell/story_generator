@@ -11,6 +11,8 @@ _defaults = {
     'current_scene': "Current scene: ",
 
     'next_scene': "Next scene: ",
+
+    'continue_story': "Here is a summary of the story so far. Don't expand on this, its just here for your reference. You will be picking up where this summary leaves off:",
 }
 
 def _get_local_overrides_module():
@@ -47,9 +49,13 @@ def get_expanded_story_instructions() -> str:
     return _merged_defaults['expanded_story_instructions']
 
 
-def get_current_scene() -> str:
-    return _merged_defaults['current_scene']
+def get_current_scene(scene: str) -> str:
+    return _merged_defaults['current_scene'] + scene
 
 
-def get_next_scene() -> str:
-    return _merged_defaults['next_scene']
+def get_next_scene(scene: str) -> str:
+    return _merged_defaults['next_scene'] + scene
+
+
+def get_continue_story(chapters: list[str]) -> str:
+    return _merged_defaults['continue_story'] + '\n'.join(chapters)
