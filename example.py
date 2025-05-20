@@ -7,12 +7,12 @@ from story_generator.pages import (
     get_story_page_from_summary_page,
     get_html,
     get_message_page_from_summary_page,
-    get_list_of_summary_pages,
+    get_list_of_remaining_summary_pages,
 )
 
 title = 'Example'
 client = get_client()
-for page in get_list_of_summary_pages(title):
+for page in get_list_of_remaining_summary_pages(title):
     print(f"Processing page: {page}")
     messages = Messages()
     messages.add_system_message(get_expanded_story_instructions())

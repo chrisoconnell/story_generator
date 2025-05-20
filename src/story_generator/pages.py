@@ -25,6 +25,15 @@ def get_message_page_from_summary_page(page: str):
 def get_list_of_summary_pages(title: str) -> list:
     return os.listdir(get_path_to_summaries(title))
 
+def _has_corresponding_story_page(title: str, page: str) -> bool:
+    story_page = get_story_page_from_summary_page(page)
+    return os.path.exists(get_path_to_stories(f"{title}/{story_page}"))
+
+# Get a list of summary pages that don't have a corresponding story page.
+def get_list_of_remaining_summary_pages(title: str) -> list:
+    pages = get_list_of_summary_pages(title)
+    return sorted(filter(lambda p: not _has_corresponding_story_page(title, p), pages))
+
 def get_pages_before_current_page(title: str, page: str) -> list:
     pages = get_list_of_summary_pages(title)
     return pages[:pages.index(page)]

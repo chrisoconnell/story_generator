@@ -6,6 +6,8 @@ This script will iterate over pages in a directory placed inside the `summaries`
 
 Each summary page will be expanded into a story html page that is written to the `stories` directory. The name of the directory that contains your summaries, will be the name of the directory that contains your stories.
 
+You can add to the story at any time by adding more pages to the summaries directory and re-running the script. The script will only expand the pages that have not been expanded yet.
+
 
 ## Setup
 This script uses Grok as the LLM. You will need to set up an X.ai account at https://accounts.x.ai/sign-up. Once signed in, you will need to go to the API console, add some funds to your account, and create an API key. This key should look like xai-blahblahblah...
