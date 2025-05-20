@@ -9,8 +9,9 @@ from story_generator.pages import (
     get_message_page_from_summary_page,
     get_list_of_remaining_summary_pages,
 )
+from story_generator.title import select_title
 
-title = 'Example'
+title = select_title()
 client = get_client()
 for page in get_list_of_remaining_summary_pages(title):
     print(f"Processing page: {page}")

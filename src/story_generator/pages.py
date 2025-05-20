@@ -16,6 +16,11 @@ def get_summary_pages(title: str) -> list:
     path = get_path_to_summaries(title)
     return sorted(os.listdir(path))
 
+def get_summary_directories() -> list:
+    path = get_path_to_summaries()
+    return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
+
+
 def get_story_page_from_summary_page(page: str):
     return page.replace(".txt", ".htm")
 

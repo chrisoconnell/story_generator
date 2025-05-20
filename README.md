@@ -29,4 +29,4 @@ local_overrides = {
 It works best if you copy/paste the `_defaults` dictionary from the story_generator/instructions.py file and just modify the instructions you want to override. Do not include instructions that you want to keep the default.
 
 ## Running the script
-To run the script, type `python example.py` in the command line. For now the title (directory containing the summaries) must be hard coded in the example.py file.
+To run the script, type `python example.py` in the command line. You will be prompted to select the name of the directory that contains your summaries.
