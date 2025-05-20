@@ -15,5 +15,16 @@ Now inside the `local` directory, create a file called .env with the following c
 XAI_API_KEY=YOUR_XAI_API_KEY_GOES_HERE
 ```
 
+### Optional
+If you want to override the instructions given to the LLM, you can create a file called `instructions.py` in the `local` directory. This file should contain a dictionary called `local_overrides` with the instructions you want to override.
+
+For example:
+```python
+local_overrides = {
+    'expanded_story_instructions': "You are Andy, a popular sci-fi writer that loves to write stories that have unexpected plot twists...",
+}
+```
+It works best if you copy/paste the `_defaults` dictionary from the story_generator/instructions.py file and just modify the instructions you want to override. Do not include instructions that you want to keep the default.
+
 ## Running the script
 To run the script, type `python example.py` in the command line. For now the title (directory containing the summaries) must be hard coded in the example.py file.

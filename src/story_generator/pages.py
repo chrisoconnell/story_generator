@@ -13,6 +13,9 @@ def get_path_to_stories(title: str = None) -> str:
         path += f"/{title}"
     return _get_absolute_path(path)
 
+def get_path_to_local(filename: str) -> str:
+    return _get_absolute_path(f"local/{filename}")
+
 def get_summary_pages(title: str) -> list:
     path = get_path_to_summaries(title)
     return sorted(os.listdir(path))

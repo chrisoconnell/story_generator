@@ -1,3 +1,8 @@
+import os
+import importlib.util
+
+from story_generator.pages import get_path_to_local
+
 _defaults = {
     'html_format_instructions': "You will provide the novel in HTML format. This will not be a complete HTML page, rather it is meant to be pasted into the body of an HTML page so will not include styles or header tags. You will use html entities like &ldquo; and &rdquo inplace of special characters like “ and ”.  Do not add titles/chapters/etc. to the story, that is handled later.",
 
@@ -8,14 +13,43 @@ _defaults = {
     'next_scene': "Next scene: ",
 }
 
+def _get_local_overrides_module():
+    local_instructions = get_path_to_local('instructions.py')
+    if not os.path.exists(local_instructions):
+        return False
+
+    spec = importlib.util.spec_from_file_location('local', local_instructions)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    if not hasattr(module, 'local_overrides'):
+        return False
+
+    return module
+
+
+def _get_local_defaults() -> dict:
+    module = _get_local_overrides_module()
+    if not module:
+        return {}
+
+    return module.local_overrides
+
+
+_merged_defaults = {**_defaults, **_get_local_defaults()}
+
+
 def get_html_format_instructions() -> str:
-    return _defaults['html_format_instructions']
+    return _merged_defaults['html_format_instructions']
+
 
 def get_expanded_story_instructions() -> str:
-    return _defaults['expanded_story_instructions']
+    return _merged_defaults['expanded_story_instructions']
+
 
 def get_current_scene() -> str:
-    return _defaults['current_scene']
+    return _merged_defaults['current_scene']
+
 
 def get_next_scene() -> str:
-    return _defaults['next_scene']
+    return _merged_defaults['next_scene']
